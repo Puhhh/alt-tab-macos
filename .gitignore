@@ -1,0 +1,22 @@
+# macOS
+.DS_Store
+
+# Xcode user state
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.moved-aside
+*.xcodeproj/project.xcworkspace/xcuserdata/
+*.xcworkspace/xcuserdata/
+
+# Local build output
+DerivedData/
+/build/
+/.build/
+
+# Packaged products
+*.app
+*.dSYM
+*.dSYM.zip
+*.ipa
+*.xcarchive
