@@ -20,6 +20,7 @@
 		A1000001000000000000000B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000001000000000000000B /* ContentView.swift */; };
 		A1000001000000000000000C /* SwitcherPanelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000001000000000000000C /* SwitcherPanelView.swift */; };
 		A1000001000000000000000D /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000001000000000000000D /* VisualEffectView.swift */; };
+		A1000001000000000000000E /* alt-tab-icon.icns in Resources */ = {isa = PBXBuildFile; fileRef = A2000001000000000000000F /* alt-tab-icon.icns */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,7 @@
 		A2000001000000000000000C /* SwitcherPanelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwitcherPanelView.swift; sourceTree = "<group>"; };
 		A2000001000000000000000D /* VisualEffectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VisualEffectView.swift; sourceTree = "<group>"; };
 		A2000001000000000000000E /* AltTabWindows.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AltTabWindows.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2000001000000000000000F /* alt-tab-icon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = alt-tab-icon.icns; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 		A40000010000000000000001 = {
 			isa = PBXGroup;
 			children = (
+				A40000010000000000000004 /* Icon */,
 				A40000010000000000000002 /* Sources */,
 				A40000010000000000000003 /* Products */,
 			);
@@ -85,6 +88,14 @@
 			);
 			name = Products;
 			sourceTree = "<group>";
+		};
+		A40000010000000000000004 /* Icon */ = {
+			isa = PBXGroup;
+			children = (
+				A2000001000000000000000F /* alt-tab-icon.icns */,
+			);
+			path = Icon;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -144,6 +155,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1000001000000000000000E /* alt-tab-icon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -196,11 +208,8 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGNING_ALLOWED = NO;
 				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = AltTabWindows;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Developed by Aleksei Blinov";
-				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AltTabWindows-Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -224,11 +233,8 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGNING_ALLOWED = NO;
 				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = AltTabWindows;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "Developed by Aleksei Blinov";
-				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AltTabWindows-Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
