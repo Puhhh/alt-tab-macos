@@ -17,11 +17,13 @@ struct FrameSignature: Hashable {
 
 struct WindowIdentity: Hashable {
     let pid: pid_t
+    let windowID: CGWindowID?
     let normalizedTitle: String
     let frameSignature: FrameSignature
 
-    init(pid: pid_t, title: String, frame: CGRect) {
+    init(pid: pid_t, windowID: CGWindowID? = nil, title: String, frame: CGRect) {
         self.pid = pid
+        self.windowID = windowID
         normalizedTitle = title
             .trimmingCharacters(in: .whitespacesAndNewlines)
             .lowercased()
@@ -32,6 +34,7 @@ struct WindowIdentity: Hashable {
 struct FocusedWindowContext {
     let identity: WindowIdentity
     let frame: CGRect
+    let window: AXUIElement
 }
 
 enum WindowActivationResult {
@@ -61,6 +64,6 @@ struct WindowEntry: Identifiable {
 
     var identity: WindowIdentity {
         let resolvedTitle = title.isEmpty ? appName : title
-        return WindowIdentity(pid: pid, title: resolvedTitle, frame: frame)
+        return WindowIdentity(pid: pid, windowID: windowID, title: resolvedTitle, frame: frame)
     }
 }

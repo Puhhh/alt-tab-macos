@@ -50,7 +50,8 @@ final class WindowCatalog {
             window: refreshedTarget.element,
             pid: entry.pid,
             application: entry.runningApplication,
-            expectedIdentity: entry.identity
+            expectedIdentity: entry.identity,
+            expectedWindow: refreshedTarget.element
         )
 
         return result == .success
@@ -193,6 +194,10 @@ final class WindowCatalog {
 
     private func refreshedAXWindow(for entry: WindowEntry) -> AccessibilityBridge.AXWindowSnapshot? {
         let snapshots = bridge.windows(for: entry.pid)
+        if let exactMatch = snapshots.first(where: { CFEqual($0.element, entry.axWindow) }) {
+            return exactMatch
+        }
+
         if let strictMatch = bestMatch(
             forTitle: entry.title,
             bounds: entry.frame,
@@ -216,7 +221,7 @@ final class WindowCatalog {
             title: entry.title,
             frame: entry.frame
         )
-        return snapshots.first(where: { CFEqual($0.element, storedSnapshot.element) }) ?? storedSnapshot
+        return storedSnapshot
     }
 
     private func consume(

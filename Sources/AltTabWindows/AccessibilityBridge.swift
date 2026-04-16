@@ -44,7 +44,8 @@ final class AccessibilityBridge {
         let title = rawTitle.isEmpty ? (app.localizedName ?? "Untitled Window") : rawTitle
         return FocusedWindowContext(
             identity: WindowIdentity(pid: app.processIdentifier, title: title, frame: frame),
-            frame: frame
+            frame: frame,
+            window: focusedWindow
         )
     }
 
@@ -53,7 +54,8 @@ final class AccessibilityBridge {
         window: AXUIElement,
         pid: pid_t,
         application: NSRunningApplication,
-        expectedIdentity: WindowIdentity
+        expectedIdentity: WindowIdentity,
+        expectedWindow: AXUIElement
     ) async -> WindowActivationResult {
         application.unhide()
         let appElement = AXUIElementCreateApplication(pid)
@@ -101,7 +103,11 @@ final class AccessibilityBridge {
             let focusedResult = AXUIElementSetAttributeValue(window, kAXFocusedAttribute as CFString, kCFBooleanTrue)
             let raiseResult = AXUIElementPerformAction(window, kAXRaiseAction as CFString)
 
-            if activationMatchesExpectedWindow(pid: pid, expectedIdentity: expectedIdentity) {
+            if activationMatchesExpectedWindow(
+                pid: pid,
+                expectedIdentity: expectedIdentity,
+                expectedWindow: expectedWindow
+            ) {
                 return .success
             }
 
@@ -120,7 +126,11 @@ final class AccessibilityBridge {
             }
         }
 
-        if activationMatchesExpectedWindow(pid: pid, expectedIdentity: expectedIdentity) {
+        if activationMatchesExpectedWindow(
+            pid: pid,
+            expectedIdentity: expectedIdentity,
+            expectedWindow: expectedWindow
+        ) {
             return .success
         }
 
@@ -198,9 +208,17 @@ final class AccessibilityBridge {
         return extracted ? size : nil
     }
 
-    private func activationMatchesExpectedWindow(pid: pid_t, expectedIdentity: WindowIdentity) -> Bool {
+    private func activationMatchesExpectedWindow(
+        pid: pid_t,
+        expectedIdentity: WindowIdentity,
+        expectedWindow: AXUIElement
+    ) -> Bool {
         guard NSWorkspace.shared.frontmostApplication?.processIdentifier == pid else { return false }
-        guard let currentIdentity = currentFocusedWindowIdentity() else { return false }
+        guard let currentContext = currentFocusedWindowContext() else { return false }
+        if CFEqual(currentContext.window, expectedWindow) {
+            return true
+        }
+        let currentIdentity = currentContext.identity
         return currentIdentity == expectedIdentity
     }
 

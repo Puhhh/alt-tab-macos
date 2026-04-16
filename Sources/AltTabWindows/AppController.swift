@@ -96,8 +96,8 @@ final class AppController: ObservableObject {
 
         let ownPID = ProcessInfo.processInfo.processIdentifier
         let currentContext = bridge.currentFocusedWindowContext()
-        let currentIdentity = currentContext?.identity
         let rawWindows = catalog.fetchVisibleWindows(excluding: ownPID)
+        let currentIdentity = resolvedCurrentIdentity(from: currentContext, in: rawWindows)
         let orderedWindows = history.order(entries: rawWindows, current: currentIdentity)
 
         guard !orderedWindows.isEmpty else {
@@ -197,6 +197,17 @@ final class AppController: ObservableObject {
 
         let center = CGPoint(x: frame.midX, y: frame.midY)
         return NSScreen.screens.first(where: { $0.frame.contains(center) }) ?? NSScreen.main
+    }
+
+    private func resolvedCurrentIdentity(
+        from context: FocusedWindowContext?,
+        in windows: [WindowEntry]
+    ) -> WindowIdentity? {
+        guard let context else { return nil }
+        if let exactMatch = windows.first(where: { CFEqual($0.axWindow, context.window) }) {
+            return exactMatch.identity
+        }
+        return context.identity
     }
 }
 
