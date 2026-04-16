@@ -6,8 +6,13 @@ final class SwitcherPanelView: NSView {
     private let visualEffect = NSVisualEffectView()
     private let scrollView = NSScrollView()
     private let documentView = NSView()
+    private let appNameLabel = NSTextField(labelWithString: "")
     private var cardViews: [SwitcherCardView] = []
+    private var windows: [WindowEntry] = []
     private var selectedIndex = 0
+    private let cardH: CGFloat = 132
+    private let cardPad: CGFloat = 16
+    private let headerHeight: CGFloat = 52
 
     override init(frame: NSRect) {
         super.init(frame: frame)
@@ -17,17 +22,17 @@ final class SwitcherPanelView: NSView {
     required init?(coder: NSCoder) { nil }
 
     func update(windows: [WindowEntry], selectedIndex: Int) {
+        self.windows = windows
         self.selectedIndex = selectedIndex
+        appNameLabel.stringValue = windows.indices.contains(selectedIndex) ? windows[selectedIndex].appName : ""
         cardViews.forEach { $0.removeFromSuperview() }
         cardViews.removeAll()
         let cardW: CGFloat = 210
-        let cardH: CGFloat = 132
         let gap: CGFloat = 12
-        let pad: CGFloat = 16
-        var x = pad
+        var x = cardPad
         for (i, entry) in windows.enumerated() {
             let card = SwitcherCardView(
-                frame: NSRect(x: x, y: pad, width: cardW, height: cardH),
+                frame: NSRect(x: x, y: cardPad, width: cardW, height: cardH),
                 entry: entry,
                 selected: i == selectedIndex
             )
@@ -35,9 +40,10 @@ final class SwitcherPanelView: NSView {
             cardViews.append(card)
             x += cardW + gap
         }
-        let panelWidth = bounds.width > 0 ? bounds.width : (x - gap + pad)
-        let docWidth = max(x - gap + pad, panelWidth)
-        let docHeight = bounds.height > 0 ? bounds.height : (cardH + 2 * pad)
+        let panelWidth = bounds.width > 0 ? bounds.width : (x - gap + cardPad)
+        let docWidth = max(x - gap + cardPad, panelWidth)
+        let availableHeight = max(cardH + 2 * cardPad, bounds.height - headerHeight)
+        let docHeight = bounds.height > 0 ? availableHeight : (cardH + 2 * cardPad)
         documentView.frame = NSRect(x: 0, y: 0, width: docWidth, height: docHeight)
         scrollToSelected()
     }
@@ -46,6 +52,7 @@ final class SwitcherPanelView: NSView {
         if cardViews.indices.contains(selectedIndex) { cardViews[selectedIndex].setSelected(false) }
         selectedIndex = index
         if cardViews.indices.contains(index) { cardViews[index].setSelected(true) }
+        appNameLabel.stringValue = windows.indices.contains(index) ? windows[index].appName : ""
         scrollToSelected()
     }
 
@@ -74,8 +81,20 @@ final class SwitcherPanelView: NSView {
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: topAnchor),
+            scrollView.topAnchor.constraint(equalTo: topAnchor, constant: headerHeight),
             scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
+        appNameLabel.font = .systemFont(ofSize: 15, weight: .semibold)
+        appNameLabel.textColor = .labelColor
+        appNameLabel.alignment = .center
+        appNameLabel.lineBreakMode = .byTruncatingTail
+        appNameLabel.setAccessibilityElement(false)
+        appNameLabel.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(appNameLabel)
+        NSLayoutConstraint.activate([
+            appNameLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
+            appNameLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
+            appNameLabel.topAnchor.constraint(equalTo: topAnchor, constant: 18)
         ])
     }
 
