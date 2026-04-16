@@ -1,19 +1,22 @@
 # macOS
 .DS_Store
-*.icns
 
 # Xcode user state
 xcuserdata/
 *.xcuserstate
 *.xccheckout
+*.xcscmblueprint
 *.moved-aside
 *.xcodeproj/project.xcworkspace/xcuserdata/
 *.xcworkspace/xcuserdata/
+*.xcresult
+*.playground/
 
 # Local build output
 DerivedData/
 /build/
 /.build/
+.swiftpm/
 
 # Packaged products
 *.app
