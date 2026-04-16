@@ -13,12 +13,9 @@ enum AccessibilityPermissionCenter {
     }
 
     static func openSystemSettings() {
-        guard
-            let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility")
-        else {
+        guard let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility") else {
             return
         }
-
         NSWorkspace.shared.open(url)
     }
 }

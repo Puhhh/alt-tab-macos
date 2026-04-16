@@ -24,9 +24,7 @@ struct WindowIdentity: Hashable {
     init(pid: pid_t, windowID: CGWindowID? = nil, title: String, frame: CGRect) {
         self.pid = pid
         self.windowID = windowID
-        normalizedTitle = title
-            .trimmingCharacters(in: .whitespacesAndNewlines)
-            .lowercased()
+        normalizedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
         frameSignature = FrameSignature(frame)
     }
 }

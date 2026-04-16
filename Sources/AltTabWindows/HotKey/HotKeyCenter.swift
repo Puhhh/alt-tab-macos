@@ -15,7 +15,6 @@ final class HotKeyCenter {
     func start() {
         guard !isStarted else { return }
         isStarted = true
-
         guard installHandler(), registerHotKeys() else {
             stop()
             return
@@ -31,17 +30,17 @@ final class HotKeyCenter {
         removeMonitors()
     }
 
+    deinit { stop() }
+
     func stop() {
         if let eventHandler {
             RemoveEventHandler(eventHandler)
             self.eventHandler = nil
         }
-
         if let forwardHotKey {
             UnregisterEventHotKey(forwardHotKey)
             self.forwardHotKey = nil
         }
-
         removeMonitors()
         isStarted = false
     }
@@ -52,7 +51,6 @@ final class HotKeyCenter {
             eventClass: OSType(kEventClassKeyboard),
             eventKind: UInt32(kEventHotKeyPressed)
         )
-
         let status = InstallEventHandler(
             GetApplicationEventTarget(),
             Self.eventHandlerUPP,
@@ -61,19 +59,16 @@ final class HotKeyCenter {
             Unmanaged.passUnretained(self).toOpaque(),
             &eventHandler
         )
-
         guard status == noErr else {
             onRegistrationFailure?("Could not install the global hotkey handler.")
             return false
         }
-
         return true
     }
 
     @discardableResult
     private func registerHotKeys() -> Bool {
         let signature = fourCharCode("ATSW")
-
         let forwardID = EventHotKeyID(signature: signature, id: 1)
         let status = RegisterEventHotKey(
             UInt32(kVK_Tab),
@@ -83,7 +78,6 @@ final class HotKeyCenter {
             0,
             &forwardHotKey
         )
-
         guard status == noErr else {
             if status == eventHotKeyExistsErr {
                 onRegistrationFailure?("Option + Tab is already being used by another app.")
@@ -92,7 +86,6 @@ final class HotKeyCenter {
             }
             return false
         }
-
         return true
     }
 
@@ -111,7 +104,6 @@ final class HotKeyCenter {
             self?.handleKeyDown(event)
             return event
         }
-
         if let globalFlags { monitors.append(globalFlags) }
         if let localFlags { monitors.append(localFlags) }
         if let globalKeys { monitors.append(globalKeys) }
@@ -125,9 +117,7 @@ final class HotKeyCenter {
 
     private func handleFlagsChanged(_ event: NSEvent) {
         let flags = event.modifierFlags.intersection(.deviceIndependentFlagsMask)
-        if !flags.contains(.option) {
-            onModifierRelease?()
-        }
+        if !flags.contains(.option) { onModifierRelease?() }
     }
 
     private func handleKeyDown(_ event: NSEvent) {
@@ -147,20 +137,12 @@ final class HotKeyCenter {
             &hotKeyID
         )
         guard status == noErr else { return status }
-
-        switch hotKeyID.id {
-        case 1:
-            onTrigger?()
-        default:
-            break
-        }
-
+        if hotKeyID.id == 1 { onTrigger?() }
         return noErr
     }
 
     private static let eventHandlerUPP: EventHandlerUPP = { _, event, userData in
         guard let event, let userData else { return noErr }
-
         let center = Unmanaged<HotKeyCenter>.fromOpaque(userData).takeUnretainedValue()
         return center.handleHotKeyEvent(event)
     }
