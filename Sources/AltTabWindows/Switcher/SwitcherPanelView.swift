@@ -12,7 +12,7 @@ final class SwitcherPanelView: NSView {
     private var selectedIndex = 0
     private let cardH: CGFloat = 132
     private let cardPad: CGFloat = 16
-    private let headerHeight: CGFloat = 52
+    private let headerHeight: CGFloat = 56
 
     override init(frame: NSRect) {
         super.init(frame: frame)
@@ -84,7 +84,7 @@ final class SwitcherPanelView: NSView {
             scrollView.topAnchor.constraint(equalTo: topAnchor, constant: headerHeight),
             scrollView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
-        appNameLabel.font = .systemFont(ofSize: 15, weight: .semibold)
+        appNameLabel.font = .systemFont(ofSize: 18, weight: .semibold)
         appNameLabel.textColor = .labelColor
         appNameLabel.alignment = .center
         appNameLabel.lineBreakMode = .byTruncatingTail
