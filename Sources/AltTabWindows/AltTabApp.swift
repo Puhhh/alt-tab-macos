@@ -7,7 +7,7 @@ struct AltTabApp: App {
 
     var body: some Scene {
         WindowGroup("AltTab Windows") {
-            ContentView()
+            ContentView(windowObserver: appDelegate.captureMainWindow)
                 .environmentObject(controller)
                 .frame(width: 520, height: 360)
                 .onAppear {

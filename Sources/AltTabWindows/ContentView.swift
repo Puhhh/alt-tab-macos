@@ -1,7 +1,9 @@
+import AppKit
 import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject private var controller: AppController
+    let windowObserver: (NSWindow?) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
@@ -13,6 +15,7 @@ struct ContentView: View {
         .padding(24)
         .frame(width: 520, height: 360, alignment: .topLeading)
         .background(Color(nsColor: .windowBackgroundColor))
+        .background(WindowObserver(onWindowChange: windowObserver))
     }
 
     private var header: some View {
@@ -133,6 +136,24 @@ struct ContentView: View {
             Text(text)
                 .font(.system(size: 13))
                 .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+}
+
+private struct WindowObserver: NSViewRepresentable {
+    let onWindowChange: (NSWindow?) -> Void
+
+    func makeNSView(context: Context) -> NSView {
+        let view = NSView()
+        DispatchQueue.main.async {
+            onWindowChange(view.window)
+        }
+        return view
+    }
+
+    func updateNSView(_ nsView: NSView, context: Context) {
+        DispatchQueue.main.async {
+            onWindowChange(nsView.window)
         }
     }
 }
