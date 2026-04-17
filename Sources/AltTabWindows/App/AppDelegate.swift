@@ -30,9 +30,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     private func configureStatusItem() {
         if let button = statusItem.button {
-            button.image = NSImage(systemSymbolName: "macwindow.badge.plus", accessibilityDescription: "AltTab")
+            button.image = statusItemImage()
             button.imagePosition = .imageOnly
             button.toolTip = "AltTab"
+            button.setAccessibilityLabel("AltTab")
         }
         let menu = NSMenu()
         menu.addItem(withTitle: "Open AltTab", action: #selector(showSettings(_:)), keyEquivalent: "")
@@ -40,5 +41,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         menu.addItem(withTitle: "Quit AltTab", action: #selector(quit(_:)), keyEquivalent: "q")
         menu.items.forEach { $0.target = self }
         statusItem.menu = menu
+    }
+
+    private func statusItemImage() -> NSImage? {
+        guard let image = NSApp.applicationIconImage.copy() as? NSImage else {
+            return NSImage(systemSymbolName: "macwindow.badge.plus", accessibilityDescription: "AltTab")
+        }
+        image.isTemplate = false
+        image.size = NSSize(width: 18, height: 18)
+        return image
     }
 }
