@@ -1,94 +1,94 @@
 # AltTabWindows
 
-Нативная macOS-утилита, которая переключает отдельные окна по `Option + Tab`.
+A native macOS utility that switches individual windows with `Option + Tab`.
 
-Показывает HUD-переключатель поверх всех пространств, собирает список видимых окон через `CGWindowList` и переводит фокус на выбранное окно через Accessibility API.
+Displays an HUD switcher above all spaces, collects the list of visible windows via `CGWindowList`, and moves focus to the selected window through the Accessibility API.
 
-## Возможности
+## Features
 
-- глобальный хоткей `Option + Tab`
-- переключение между отдельными окнами, а не только между приложениями
-- HUD-оверлей со списком окон и текущим выбором
-- активация окна после отпускания `Option`
-- отмена переключения по `Esc`
-- иконка в строке меню и окно с состоянием разрешений
-- работа на нескольких дисплеях — HUD позиционируется на актуальном экране
+- global hotkey `Option + Tab`
+- switching between individual windows, not just between applications
+- HUD overlay with the window list and current selection
+- window activation on releasing `Option`
+- cancel switching with `Esc`
+- menu bar icon and a permissions status window
+- multi-display support — the HUD is positioned on the active screen
 
-## Требования
+## Requirements
 
 - macOS 14.0+
-- Swift 5.9+ (Xcode Command Line Tools или полный Xcode)
-- доступ `System Settings > Privacy & Security > Accessibility`
+- Swift 5.9+ (Xcode Command Line Tools or full Xcode)
+- `System Settings > Privacy & Security > Accessibility` access
 
-Внешних зависимостей нет.
+No external dependencies.
 
-## Установка
+## Installation
 
 ```bash
 bash make-app.sh
 ```
 
-Скрипт собирает release-бинарник, формирует `.app`-бандл и подписывает его ad-hoc подписью. Готовый бандл появляется в корне проекта:
+The script builds a release binary, assembles the `.app` bundle, and signs it with an ad-hoc signature. The finished bundle appears in the project root:
 
 ```text
 AltTabWindows.app
 ```
 
-Перетащи `AltTabWindows.app` в `/Applications`.
+Drag `AltTabWindows.app` into `/Applications`.
 
-При первом запуске macOS может показать предупреждение о неизвестном разработчике. Чтобы обойти:
+On first launch macOS may show an unknown developer warning. To bypass it:
 
 ```bash
 xattr -d com.apple.quarantine /Applications/AltTabWindows.app
 ```
 
-## Сборка для разработки
+## Building for Development
 
 ```bash
 swift build
 ```
 
-Бинарник окажется в `.build/debug/AltTabWindows`.
+The binary will be located at `.build/debug/AltTabWindows`.
 
-## Разрешения
+## Permissions
 
-Без Accessibility-доступа приложение не может:
+Without Accessibility access the application cannot:
 
-- читать заголовки и геометрию окон
-- определять текущее активное окно
-- переводить фокус на выбранное окно
+- read window titles and geometry
+- determine the currently active window
+- move focus to the selected window
 
-Если доступ не выдан, главное окно покажет статус разрешения и кнопку для открытия системных настроек.
+If access has not been granted, the main window will show the permission status and a button to open System Settings.
 
-## Как пользоваться
+## How to Use
 
-1. Оставь `AltTabWindows` запущенным в фоне.
-2. Удерживай `Option`.
-3. Нажимай `Tab`, чтобы идти вперёд по списку видимых окон.
-4. Отпусти `Option` — фокус перейдёт на выбранное окно.
-5. Нажми `Esc`, чтобы закрыть HUD без переключения.
+1. Keep `AltTabWindows` running in the background.
+2. Hold `Option`.
+3. Press `Tab` to move forward through the list of visible windows.
+4. Release `Option` — focus will move to the selected window.
+5. Press `Esc` to close the HUD without switching.
 
-## Как устроено переключение
+## How Switching Works
 
-- список строится из on-screen окон через `CGWindowListCopyWindowInfo`
-- служебные и минимизированные окна исключаются
-- порядок основан на z-order и локальной истории последних переключений
-- при активации окно поднимается и получает фокус через Accessibility API
+- the list is built from on-screen windows via `CGWindowListCopyWindowInfo`
+- system and minimized windows are excluded
+- order is based on z-order and a local history of recent switches
+- on activation the window is raised and receives focus through the Accessibility API
 
-## Ограничения
+## Limitations
 
-- работает только с окнами, доступными через публичные macOS API
-- без Accessibility-разрешения переключение недоступно
-- минимизированные окна не попадают в список
-- порядок не является точной копией системного MRU для всех сценариев
+- only works with windows accessible through public macOS APIs
+- switching is unavailable without Accessibility permission
+- minimized windows are not included in the list
+- the order is not an exact replica of the system MRU in all scenarios
 
-## Структура проекта
+## Project Structure
 
 ```
 Sources/AltTabWindows/
-  App/           — точка входа, AppDelegate, AppController, окно настроек
-  HotKey/        — регистрация глобального Option + Tab через Carbon API
-  Window/        — сбор окон, модели, история переключений
-  Accessibility/ — чтение и активация окон через AX API
-  Switcher/      — HUD-панель, карточки окон, позиционирование на экране
+  App/           — entry point, AppDelegate, AppController, settings window
+  HotKey/        — global Option + Tab registration via Carbon API
+  Window/        — window collection, models, switching history
+  Accessibility/ — reading and activating windows via AX API
+  Switcher/      — HUD panel, window cards, screen positioning
 ```
