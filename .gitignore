@@ -21,6 +21,7 @@ DerivedData/
 
 # Packaged products
 *.app
+AltTabWindows.app.zip
 *.dSYM
 *.dSYM.zip
 *.ipa

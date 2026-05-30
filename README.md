@@ -97,13 +97,15 @@ If access has not been granted, the main window will show the permission status 
 1. Update `CFBundleShortVersionString` and `CFBundleVersion` in `make-app.sh`.
 2. Run `bash make-app.sh`.
 3. Test `/Applications/AltTabWindows.app` on a clean launch with Accessibility permission granted.
-4. Zip the built app:
+4. Commit the version change and push `main`.
+5. Create and push a release tag:
 
 ```bash
-ditto -c -k --keepParent AltTabWindows.app AltTabWindows.app.zip
+git tag v1.0
+git push origin main v1.0
 ```
 
-5. Attach `AltTabWindows.app.zip` to the GitHub release.
+GitHub Actions will build `AltTabWindows.app`, verify the ad-hoc signature, package `AltTabWindows.app.zip`, and attach it to the GitHub release.
 
 ## Project Structure
 
