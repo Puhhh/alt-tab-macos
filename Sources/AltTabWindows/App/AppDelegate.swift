@@ -32,20 +32,20 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         if let button = statusItem.button {
             button.image = statusItemImage()
             button.imagePosition = .imageOnly
-            button.toolTip = "AltTab"
-            button.setAccessibilityLabel("AltTab")
+            button.toolTip = "AltTabWindows"
+            button.setAccessibilityLabel("AltTabWindows")
         }
         let menu = NSMenu()
-        menu.addItem(withTitle: "Open AltTab", action: #selector(showSettings(_:)), keyEquivalent: "")
+        menu.addItem(withTitle: "Open AltTabWindows", action: #selector(showSettings(_:)), keyEquivalent: "")
         menu.addItem(.separator())
-        menu.addItem(withTitle: "Quit AltTab", action: #selector(quit(_:)), keyEquivalent: "q")
+        menu.addItem(withTitle: "Quit AltTabWindows", action: #selector(quit(_:)), keyEquivalent: "q")
         menu.items.forEach { $0.target = self }
         statusItem.menu = menu
     }
 
     private func statusItemImage() -> NSImage? {
         guard let image = NSApp.applicationIconImage.copy() as? NSImage else {
-            return NSImage(systemSymbolName: "macwindow.badge.plus", accessibilityDescription: "AltTab")
+            return NSImage(systemSymbolName: "macwindow.badge.plus", accessibilityDescription: "AltTabWindows")
         }
         image.isTemplate = false
         image.size = NSSize(width: 18, height: 18)

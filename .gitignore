@@ -3,6 +3,7 @@
 
 # Xcode user state
 xcuserdata/
+*.xcuserdatad/
 *.xcuserstate
 *.xccheckout
 *.xcscmblueprint
@@ -24,4 +25,7 @@ DerivedData/
 *.dSYM.zip
 *.ipa
 *.xcarchive
+
+# Local signing/configuration overrides
 *.xcconfig
+ExportOptions.plist

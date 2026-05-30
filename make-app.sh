@@ -22,9 +22,9 @@ cat > "$APP_DIR/Contents/Info.plist" << 'EOF'
     <key>CFBundleIdentifier</key>
     <string>com.ablbv.alttabwindows</string>
     <key>CFBundleName</key>
-    <string>AltTab</string>
+    <string>AltTabWindows</string>
     <key>CFBundleDisplayName</key>
-    <string>AltTab</string>
+    <string>AltTabWindows</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
