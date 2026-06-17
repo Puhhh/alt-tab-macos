@@ -1,6 +1,27 @@
 import AppKit
 import ApplicationServices
 
+func sanitizeWindowTitle(_ title: String, maxLength: Int = 256) -> String {
+    let sanitizedScalars = title.unicodeScalars.map { scalar -> Character in
+        let category = scalar.properties.generalCategory
+        let shouldDrop =
+            category == .control ||
+            category == .format ||
+            category == .lineSeparator ||
+            category == .paragraphSeparator ||
+            category == .surrogate ||
+            scalar.properties.isBidiControl
+        return shouldDrop ? " " : Character(scalar)
+    }
+    let collapsedWhitespace = String(sanitizedScalars).replacingOccurrences(
+        of: "\\s+",
+        with: " ",
+        options: .regularExpression
+    )
+    let trimmed = collapsedWhitespace.trimmingCharacters(in: .whitespacesAndNewlines)
+    return String(trimmed.prefix(maxLength))
+}
+
 struct FrameSignature: Hashable {
     let x: Int
     let y: Int
@@ -24,7 +45,7 @@ struct WindowIdentity: Hashable {
     init(pid: pid_t, windowID: CGWindowID? = nil, title: String, frame: CGRect) {
         self.pid = pid
         self.windowID = windowID
-        normalizedTitle = title.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        normalizedTitle = sanitizeWindowTitle(title).lowercased()
         frameSignature = FrameSignature(frame)
     }
 }
@@ -53,7 +74,8 @@ struct WindowEntry: Identifiable {
     let axWindow: AXUIElement
 
     var displayTitle: String {
-        title.isEmpty ? "Untitled Window" : title
+        let sanitizedTitle = sanitizeWindowTitle(title)
+        return sanitizedTitle.isEmpty ? "Untitled Window" : sanitizedTitle
     }
 
     var icon: NSImage? {
@@ -61,7 +83,7 @@ struct WindowEntry: Identifiable {
     }
 
     var identity: WindowIdentity {
-        let resolvedTitle = title.isEmpty ? appName : title
+        let resolvedTitle = sanitizeWindowTitle(title.isEmpty ? appName : title)
         return WindowIdentity(pid: pid, windowID: windowID, title: resolvedTitle, frame: frame)
     }
 }

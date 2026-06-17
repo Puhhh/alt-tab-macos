@@ -75,7 +75,7 @@ final class WindowCatalog {
         }
         let windowID = (info[kCGWindowNumber as String] as? NSNumber)?.uint32Value ?? 0
         let rawTitle = (info[kCGWindowName as String] as? String) ?? ""
-        let appName = app.localizedName ?? ownerName
+        let appName = sanitizeWindowTitle(app.localizedName ?? ownerName)
         var axWindows = axCache[pid] ?? bridge.windows(for: pid)
         guard let matchedAXWindow = bestMatch(
             forTitle: rawTitle, bounds: bounds, among: axWindows, rigour: .list
@@ -84,7 +84,9 @@ final class WindowCatalog {
         }
         consume(snapshot: matchedAXWindow, from: &axWindows)
         axCache[pid] = axWindows
-        let resolvedTitle = rawTitle.isEmpty && !matchedAXWindow.title.isEmpty ? matchedAXWindow.title : rawTitle
+        let resolvedTitle = sanitizeWindowTitle(
+            rawTitle.isEmpty && !matchedAXWindow.title.isEmpty ? matchedAXWindow.title : rawTitle
+        )
         return WindowEntry(
             id: "\(pid)-\(windowID)",
             windowID: windowID,
@@ -140,7 +142,7 @@ final class WindowCatalog {
     }
 
     private func normalize(_ title: String) -> String {
-        title.trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        sanitizeWindowTitle(title).lowercased()
     }
 
     private func refreshedAXWindow(for entry: WindowEntry) -> AccessibilityBridge.AXWindowSnapshot? {

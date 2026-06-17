@@ -32,7 +32,7 @@ final class AccessibilityBridge {
         }
         guard let frame = frame(of: focusedWindow) else { return nil }
         let rawTitle = stringAttribute(kAXTitleAttribute as CFString, from: focusedWindow) ?? ""
-        let title = rawTitle.isEmpty ? (app.localizedName ?? "Untitled Window") : rawTitle
+        let title = sanitizeWindowTitle(rawTitle.isEmpty ? (app.localizedName ?? "Untitled Window") : rawTitle)
         return FocusedWindowContext(
             identity: WindowIdentity(pid: app.processIdentifier, title: title, frame: frame),
             frame: frame,

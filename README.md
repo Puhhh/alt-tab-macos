@@ -4,7 +4,7 @@ A native macOS utility that switches individual windows with `Option + Tab`.
 
 Displays an HUD switcher above all spaces, collects the list of visible windows via `CGWindowList`, and moves focus to the selected window through the Accessibility API.
 
-> This is an unsigned open-source utility. It requires Accessibility permission because macOS exposes window inspection and focusing through the Accessibility API.
+> This is an open-source utility distributed without a Developer ID signature. Local builds use an ad-hoc signature, and the app requires Accessibility permission because macOS exposes window inspection and focusing through the Accessibility API.
 
 ## Features
 
@@ -101,8 +101,8 @@ If access has not been granted, the main window will show the permission status 
 5. Create and push a release tag:
 
 ```bash
-git tag v1.0
-git push origin main v1.0
+git tag v1.0.2
+git push origin main v1.0.2
 ```
 
 GitHub Actions will build `AltTabWindows.app`, verify the ad-hoc signature, package `AltTabWindows.app.zip`, and attach it to the GitHub release.
