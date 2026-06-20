@@ -21,10 +21,10 @@ jobs:
         run: bash make-app.sh
 
       - name: Verify app signature
-        run: codesign --verify --deep --strict --verbose=2 AltTabWindows.app
+        run: codesign --verify --deep --strict --verbose=2 AltTabMacOS.app
 
       - name: Package app
-        run: ditto -c -k --keepParent AltTabWindows.app AltTabWindows.app.zip
+        run: ditto -c -k --keepParent AltTabMacOS.app AltTabMacOS.app.zip
 
       - name: Publish GitHub release
         env:
@@ -32,9 +32,9 @@ jobs:
           TAG_NAME: ${{ github.ref_name }}
         run: |
           if gh release view "$TAG_NAME" >/dev/null 2>&1; then
-            gh release upload "$TAG_NAME" AltTabWindows.app.zip --clobber
+            gh release upload "$TAG_NAME" AltTabMacOS.app.zip --clobber
           else
-            gh release create "$TAG_NAME" AltTabWindows.app.zip \
+            gh release create "$TAG_NAME" AltTabMacOS.app.zip \
               --title "$TAG_NAME" \
               --generate-notes
           fi

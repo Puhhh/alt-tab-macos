@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.0.3] - 2026-06-20
+
+### Changed
+
+- Renamed the application, SwiftPM target, app bundle, bundle identifier, Xcode project, and GitHub release asset from `AltTabWindows` to `AltTabMacOS`.
+
 ## [1.0.2] - 2026-06-17
 
 ### Security
@@ -18,14 +24,14 @@ All notable changes to this project will be documented in this file.
 
 ### Added
 
-- Initial public release of AltTabWindows, a native macOS utility for switching individual windows with `Option + Tab`.
+- Initial public release of AltTabMacOS, a native macOS utility for switching individual windows with `Option + Tab`.
 - HUD-based window switcher, Accessibility-driven window focusing, menu bar status UI, and multi-display HUD positioning.
-- GitHub Actions release workflow that builds `AltTabWindows.app`, verifies the ad-hoc signature, packages `AltTabWindows.app.zip`, and publishes the GitHub release.
+- GitHub Actions release workflow that builds `AltTabMacOS.app`, verifies the ad-hoc signature, packages `AltTabMacOS.app.zip`, and publishes the GitHub release.
 
 ### Changed
 
 - Updated the release checklist in `README.md` to use tag-based GitHub release publishing.
-- Added `AltTabWindows.app.zip` to `.gitignore` so packaged release artifacts stay local.
+- Added `AltTabMacOS.app.zip` to `.gitignore` so packaged release artifacts stay local.
 
 ### Fixed
 

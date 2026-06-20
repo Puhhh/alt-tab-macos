@@ -2,12 +2,12 @@
 import PackageDescription
 
 let package = Package(
-    name: "AltTabWindows",
+    name: "AltTabMacOS",
     platforms: [.macOS(.v14)],
     targets: [
         .executableTarget(
-            name: "AltTabWindows",
-            path: "Sources/AltTabWindows"
+            name: "AltTabMacOS",
+            path: "Sources/AltTabMacOS"
         )
     ]
 )
