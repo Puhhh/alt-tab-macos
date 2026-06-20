@@ -1,4 +1,4 @@
-# AltTabWindows
+# AltTabMacOS
 
 A native macOS utility that switches individual windows with `Option + Tab`.
 
@@ -26,14 +26,16 @@ No external dependencies.
 
 ## Install from GitHub Release
 
-1. Download `AltTabWindows.app.zip` from the latest release.
-2. Unzip it and move `AltTabWindows.app` to `/Applications`.
+1. Download `AltTabMacOS.app.zip` from the latest release.
+2. Unzip it and move `AltTabMacOS.app` to `/Applications`.
 3. Launch the app and grant Accessibility access when prompted.
+
+If you previously used the app under the old `AltTabWindows` name, macOS may ask for Accessibility access again because the bundle identifier changed.
 
 If macOS reports that the app is from an unidentified developer, remove the quarantine attribute after moving it to `/Applications`:
 
 ```bash
-xattr -d com.apple.quarantine /Applications/AltTabWindows.app
+xattr -d com.apple.quarantine /Applications/AltTabMacOS.app
 ```
 
 ## Build from Source
@@ -45,10 +47,10 @@ bash make-app.sh
 The script builds a release binary, assembles the `.app` bundle, and signs it with an ad-hoc signature. The finished bundle appears in the project root:
 
 ```text
-AltTabWindows.app
+AltTabMacOS.app
 ```
 
-Drag `AltTabWindows.app` into `/Applications`.
+Drag `AltTabMacOS.app` into `/Applications`.
 
 ## Building for Development
 
@@ -56,9 +58,9 @@ Drag `AltTabWindows.app` into `/Applications`.
 swift build
 ```
 
-The binary will be located at `.build/debug/AltTabWindows`.
+The binary will be located at `.build/debug/AltTabMacOS`.
 
-You can also open `AltTabWindows.xcodeproj`, but Swift Package Manager is the primary build path.
+You can also open `AltTabMacOS.xcodeproj`, but Swift Package Manager is the primary build path.
 
 ## Permissions
 
@@ -72,7 +74,7 @@ If access has not been granted, the main window will show the permission status 
 
 ## How to Use
 
-1. Keep `AltTabWindows` running in the background.
+1. Keep `AltTabMacOS` running in the background.
 2. Hold `Option`.
 3. Press `Tab` to move forward through the list of visible windows.
 4. Release `Option` — focus will move to the selected window.
@@ -96,21 +98,21 @@ If access has not been granted, the main window will show the permission status 
 
 1. Update `CFBundleShortVersionString` and `CFBundleVersion` in `make-app.sh`.
 2. Run `bash make-app.sh`.
-3. Test `/Applications/AltTabWindows.app` on a clean launch with Accessibility permission granted.
-4. Commit the version change and push `main`.
-5. Create and push a release tag:
+3. Test `/Applications/AltTabMacOS.app` on a clean launch with Accessibility permission granted.
+4. Commit the version change, push the release branch, open a PR, and merge it to `main`.
+5. Create and push a signed release tag from the merged `main` commit:
 
 ```bash
-git tag v1.0.2
-git push origin main v1.0.2
+git tag -s -m "v1.0.3" v1.0.3
+git push origin main v1.0.3
 ```
 
-GitHub Actions will build `AltTabWindows.app`, verify the ad-hoc signature, package `AltTabWindows.app.zip`, and attach it to the GitHub release.
+GitHub Actions will build `AltTabMacOS.app`, verify the ad-hoc signature, package `AltTabMacOS.app.zip`, and attach it to the GitHub release.
 
 ## Project Structure
 
 ```
-Sources/AltTabWindows/
+Sources/AltTabMacOS/
   App/           — entry point, AppDelegate, AppController, settings window
   HotKey/        — global Option + Tab registration via Carbon API
   Window/        — window collection, models, switching history

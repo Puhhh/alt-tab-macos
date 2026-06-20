@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-APP_NAME="AltTabWindows"
+APP_NAME="AltTabMacOS"
 APP_DIR="${APP_NAME}.app"
 
 swift build -c release
@@ -18,19 +18,19 @@ cat > "$APP_DIR/Contents/Info.plist" << 'EOF'
 <plist version="1.0">
 <dict>
     <key>CFBundleExecutable</key>
-    <string>AltTabWindows</string>
+    <string>AltTabMacOS</string>
     <key>CFBundleIdentifier</key>
-    <string>com.ablbv.alttabwindows</string>
+    <string>com.alekseib.alttabmacos</string>
     <key>CFBundleName</key>
-    <string>AltTabWindows</string>
+    <string>AltTabMacOS</string>
     <key>CFBundleDisplayName</key>
-    <string>AltTabWindows</string>
+    <string>AltTabMacOS</string>
     <key>CFBundlePackageType</key>
     <string>APPL</string>
     <key>CFBundleShortVersionString</key>
-    <string>1.0.2</string>
+    <string>1.0.3</string>
     <key>CFBundleVersion</key>
-    <string>3</string>
+    <string>4</string>
     <key>CFBundleIconFile</key>
     <string>alt-tab-icon</string>
     <key>LSApplicationCategoryType</key>
